@@ -116,15 +116,34 @@ _ =
     81
   ∎
 
+-- SOTTRAZIONE NATURALE (monus)
+
+_∸_ : ℕ -> ℕ -> ℕ
+m     ∸ zero   =  m
+zero  ∸ suc n  =  zero
+suc m ∸ suc n  =  m ∸ n
+
+_ =
+  begin
+    3 ∸ 5
+  ≡⟨⟩
+    2 ∸ 4
+  ≡⟨⟩
+    1 ∸ 3
+  ≡⟨⟩
+    0 ∸ 2
+  ≡⟨⟩
+    0
+  ∎
+
 {-
-Con infix <n> ... dichiariamo la precedenza dell'operatore
+Con infix <n> ... dichiariamo la precedenza dell'operatore dove n = livell odi precedenza
 infixl -> associativo a sinistra
 infixr -> associativo a destra
 infix  -> servono sempre le parentesi per disambiguare
 -}
 
 infixl 6  _+_  _∸_
--- infixl 7  _*_
-
+infixl 7  _*_
 
 -- Tutto ciò che sappiamo sui naturali è definito in Data.Nat (modulo)
