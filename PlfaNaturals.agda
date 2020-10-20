@@ -1,4 +1,4 @@
-module NaturalNumbers where
+module PlfaNaturals where
 
 {-
   --------
