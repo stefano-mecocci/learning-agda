@@ -12,6 +12,9 @@ z≤n --------
     m ≤ n
 s≤s -------------
     suc m ≤ suc n
+
+dove z≤n e s≤s sono nomi, evidenze
+di zero ≤ n e m ≤ n
 -}
 
 -- {...} argomenti impliciti
@@ -26,8 +29,8 @@ data _≤_ : ℕ → ℕ → Set where
       -------------
     → suc m ≤ suc n
 
--- +-comm m n  for  m + n ≡ n + m
---        z≤n  for  zero ≤ n
+-- +-comm m n  per  m + n ≡ n + m
+--        z≤n  per  zero ≤ n
 -- n è implicito
 -- gli argomenti impliciti possono essere resi espliciti
 _ : 2 ≤ 4
@@ -37,7 +40,6 @@ _ = s≤s {1} {3} (s≤s {0} {2} (z≤n {2}))
 _ : 1 ≤ 3
 _ = (s≤s {m = 0} {n = 2} (z≤n {n = 2}))
 
--- impostiamo la precedenza della relazione
 infix 4 _≤_
 
 -- inversione

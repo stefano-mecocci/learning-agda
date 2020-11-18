@@ -34,13 +34,14 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
     suc (m + n) + p
   ≡⟨⟩
     suc ((m + n) + p)
-  ≡⟨ cong suc (+-assoc m n p) ⟩ -- come si spiega?
+  ≡⟨ cong suc (+-assoc m n p) ⟩ -- cong = congruenza
     suc (m + (n + p))
   ≡⟨⟩
     suc m + (n + p)
   ∎
 
 -- dimostrazione commutatività di _+_ per induzione
+-- ci servono dei lemmi aggiuntivi per procedere
 
 -- primo lemma
 -- abbiamo già id a sinistra, ora dobbiamo provare id a destra
@@ -61,8 +62,8 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
     suc m
   ∎
 
--- secondo lemma: suc
--- m + suc n ≡ suc (m + n)
+-- secondo lemma
+
 +-suc : ∀ (m n : ℕ) -> m + suc n ≡ suc (m + n)
 +-suc zero n =
   begin
@@ -105,6 +106,8 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
     suc n + m
   ∎
 
+-- dimostrazione alternative di proprietà
+
 +-assoc′ : ∀ (m n p : ℕ) → (m + n) + p ≡ m + (n + p)
 +-assoc′ zero    n p                         =  refl
 +-assoc′ (suc m) n p  rewrite +-assoc′ m n p  =  refl
@@ -113,29 +116,45 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 +-identity′ zero = refl
 +-identity′ (suc n) rewrite +-identity′ n = refl
 
-
 +-suc′ : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
 +-suc′ zero n = refl
 +-suc′ (suc m) n rewrite +-suc′ m n = refl
-
 
 +-comm′ : ∀ (m n : ℕ) → m + n ≡ n + m
 +-comm′ m zero rewrite +-identity′ m = refl
 +-comm′ m (suc n) rewrite +-suc′ m n | +-comm′ m n = refl
 
--- | è per riscrivere con 2 equazioni (seguono l'ordine)
--- esercizi
+-- rewrite applica la riscrittura
+-- refl dimostra per riflessività in automatico
+-- | è per riscrivere con più equazioni (seguono l'ordine)
 
--- swap ==> m + (n + p) ≡ n + (m + p)
+-- ESERCIZI
 
 +-swap : ∀ (m n p : ℕ) -> m + (n + p) ≡ n + (m + p)
-+-swap m n p =
-  begin
-    m + (n + p)
-  ≡⟨ sym(+-assoc m n p) ⟩
-    (m + n) + p
-  ≡⟨ cong (_+ p) (+-comm m n) ⟩
-    (n + m) + p
-  ≡⟨ +-assoc n m p ⟩
-    n + (m + p)
-  ∎
++-swap m n p rewrite sym(+-assoc′ m n p) | +-comm′ m n | +-assoc′ n m p = refl
+
+*-distrib-+ : ∀ (m n p : ℕ) → (m + n) * p ≡ m * p + n * p
+*-distrib-+ zero n p = refl
+*-distrib-+ (suc m) n p rewrite *-distrib-+ m n p | +-assoc′ p (m * p) (n * p) = refl
+
+*-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
+*-assoc zero n p = refl
+*-assoc (suc m) n p rewrite *-distrib-+ n (m * n) p | *-assoc m n p = refl
+
+-- primo lemma
+
+*-identityʳ : ∀ (m : ℕ) → m * zero ≡ zero
+*-identityʳ zero = refl
+*-identityʳ (suc m) rewrite *-identityʳ m = refl
+
+-- secondo lemma
+
+*-suc : ∀ (m n : ℕ) → n * suc m ≡ n + n * m
+*-suc m zero = refl
+*-suc m (suc n) rewrite sym(+-assoc′ n m (n * m)) | +-comm′ n m | *-suc m n | +-assoc m n (n * m) = refl
+
+-- dimostrazione finale
+
+*-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
+*-comm zero n rewrite *-identityʳ n = refl
+*-comm (suc m) n rewrite *-suc m n | *-comm m n = refl
