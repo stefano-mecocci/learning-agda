@@ -100,3 +100,9 @@ open _≃_
           y
         ∎
     }
+
+postulate
+  extensionality : ∀ {A B : Set} {f g : A → B}
+    → (∀ (x : A) → f x ≡ g x)
+      -----------------------
+    → f ≡ g
