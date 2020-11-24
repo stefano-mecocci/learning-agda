@@ -106,3 +106,33 @@ postulate
     → (∀ (x : A) → f x ≡ g x)
       -----------------------
     → f ≡ g
+
+-- ESERCIZI
+
+record _⇔_ (A B : Set) : Set where
+  field
+    to   : A → B
+    from : B → A
+
+open _⇔_
+
+-- dimostrare riflessività, simmetria e transitività
+
+⇔-refl :  ∀ {A : Set} 
+      -----
+    → A ⇔ A
+⇔-refl =
+  record
+    { to   = λ x → x
+    ; from = λ y → y
+    }
+
+⇔-sym : ∀ {A B : Set} 
+  → A ⇔ B
+    -----
+  → B ⇔ A
+⇔-sym A⇔B =
+  record
+    { to   = from A⇔B
+    ; from = to A⇔B 
+    }
